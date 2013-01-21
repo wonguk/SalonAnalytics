@@ -1,0 +1,254 @@
+﻿
+
+<head>
+    <title>Analytics</title>
+    <link href="css/StyleSheet1.css" rel="stylesheet" />
+</head>
+<body>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/jsrender.js"></script>
+    <script type="text/javascript" src="js/sorttable.js"></script>
+    <script type="text/javascript" src="js/highcharts.js"></script>
+    <script type="text/javascript" src="js/exporting.js"></script>
+    <script type="text/javascript" src="js/html2CSV.js" ></script>
+    <script type="text/javascript" src="js/swfobject.js"></script>
+	<script type="text/javascript" src="js/downloadify.min.js"></script>
+    <script type="text/javascript" src="Script1.js"></script>
+
+
+    <script id="CgradesTemplate" type="text/x-jsrender">
+        <p id="cDownload" style="float:right"> 
+            You must have Flash 10 installed to download this file. 
+        </p>
+
+        </br></br>
+        
+        <table id = "cTable" class="sortable" style="text-align:center;">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Comments</th>
+                <th>Comment Length</th>
+                <th>Questions</th>
+                <th>Question Length</th>
+                <th>Replies</th>
+            </tr>
+            {{for g tmpl="#CgradesInner"/}} 
+        </table>
+    </script>
+
+    <script id="CgradesInner" type="text/x-jsrender">
+        <tr>
+            <td>{{>n}}</td>
+            <td>{{>e}}</td>
+            <td>{{>tc}}</td>
+            <td>{{>tcl}}</td>
+            <td>{{>tq}}</td>
+            <td>{{>tql}}</td>
+            <td>{{>tr}}</td>
+        </tr>
+    </script>
+    
+    <script id="CdetailsTemplate" type="text/x-jsrender">
+    <div class = "container2">
+        <b>Document:</b> {{>document}}<br/>
+        <b>Selection:</b> {{>selection}}<br/>
+        <b>Comment:</b> {{>comment}}
+    </div>
+    </script>
+
+    <script id="CquestionTemplate" type="text/x-jsrender">
+    <div class = "container2">
+        <b>Document:</b> {{>document}}<br/>
+        <b>Selection:</b> {{>selection}}<br/>
+        <b>Question:</b> {{>question}}
+    </div>
+    </script>
+   
+    <script type="text/javascript">
+        function imgError(image) {
+            image.onerror = "";
+            image.src = "http://www.classroomsalon.org/memberpics/picture.jpg";
+            return true;
+        }
+    </script>
+
+    <script id="CIndividualTemplate" type="text/x-jsrender">
+        <div class="leftColumn" style="height:100px"> 
+            <img src = {{>usrPic}} id="img" onerror="imgError(this)">
+            <h4> {{>n}} </br>
+            ({{>e}})</h4>
+        </div>
+        
+        </br></br></br></br></br>
+
+        <div id="CIndGraph2" class="rightColumn" style="height:400px"></div>
+
+        <div class="leftColumn" style="height:250px">
+            <b> Stats </b>
+            <ul>
+                <li> Number of Comments : {{>a.tc}} </li>
+                <li> Total Comment Length: {{>a.tcl}} </li>
+                <li> Average Comment Length: {{>a.acl}} </li>
+                <li> Number of Questions : {{>a.tq}} </li>
+                <li> Total Question Length: {{>a.tql}} </li>
+                <li> Average Question Length: {{>a.aql}} </li>
+                <li> Total Replies: {{>a.tr}} </li>
+            </ul>
+        </div>
+    </script>
+    
+    <script id="RgradesTemplate" type="text/x-jsrender">
+        <p id="rDownload" style="float:right"> 
+            You must have Flash 10 installed to download this file. 
+        </p>
+
+        </br></br>
+
+        <table id = "rTable" class="sortable" style="text-align:center;">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Responses</th>
+                <th>Response Length</th>
+            </tr>
+            {{for g tmpl="#RgradesInner"/}} 
+        </table>
+    </script>
+
+    <script id="RgradesInner" type="text/x-jsrender">
+        <tr>
+            <td>{{>n}}</td>
+            <td>{{>e}}</td>
+            <td>{{>tr}}</td>
+            <td>{{>trl}}</td>
+        </tr>
+    </script>
+   
+    <script id="RdetailsTemplate" type="text/x-jsrender">
+    <div class = "container2">
+        <b>Document:</b> {{>document}}<br/><br/>
+        <b>Question:</b> {{>question}}<br/><br/>
+        <b>Response:</b> {{>response}}
+    </div>
+    </script>
+   
+    <script id="RIndividualTemplate" type="text/x-jsrender">
+        <div class="leftColumn" style="height:100px"> 
+            <img src = {{>usrPic}} id="img" onerror="imgError(this)">
+            <h4> {{>n}} </br>
+            ({{>e}})</h4>
+        </div>
+
+        </br></br></br></br></br>
+
+        <div class="rightColumn" id="RIndGraph2" style="height:400px;"></div>
+
+        <div class="leftColumn" style="height:250px;">
+            <b> Stats </b>
+            <ul>
+                <li> Number of Responses : {{>a.tr }} </li>
+                <li> Total Response Length: {{>a.trl}} </li>
+                <li> Average Response Length: {{>a.arl}} </li>
+            </ul>
+        </div>
+    </script>
+    
+
+<h1>Salon Analytics</h1>
+<div class="container">
+    <h2><a id="Input" href="#">Input</a></h2>
+    <div class="container input">
+        <h3>Add a Comments File:</h3>
+        <input class="fileSource" type="file" id="comments" name="comments" />
+        <button class="parserStarter" data-input="comments">Start Processing Comments</button>
+        <p data-input="comments" class = "progress" id="comProgress"><p>
+    </div>
+    <div class="container input">
+        <h3>Add a Responses File:</h3>
+        <input class="fileSource" type="file" id="responses" name="responses" />
+        <button class="parserStarter" data-input="responses">Start Processing Responses</button>
+        <p data-input="responses" class="progress" id="resProgress"><p>
+    </div>
+</div>
+    
+
+<div class="container">
+    <h2><a id="Output" href="#">Output</a></h2>
+    <div class="output">
+    <div class="container">
+        <button class="onlyOneDisabledGroup" data-show="#outputComments" id="cb">Comments</button>
+        <button class="onlyOneDisabledGroup" data-show="#outputResponses" id="rb">Responses</button>
+
+        <p class="search">
+            <input type="text" id="keyword" value ="">
+            <button id="search">Search</button>
+        </p>
+
+    </div>
+    
+    <div class="container onlyOneVisibleGroup" id="outputComments">
+        <button class="onlyOneDisabledTab" data-show="#commentGlance" id="cgl">At a Glance</button>
+        <button class="onlyOneDisabledTab" data-show="#commentGrades" id="cgb">Grades</button>
+        <button class="onlyOneDisabledTab" data-show="#commentDetails" id ="cdt">Comments</button>
+        <button class="onlyOneDisabledTab" data-show="#commentQuestions">Questions</button>
+
+        <button id="cReset" style="float:right;margin-left:20px;">Reset</button>
+        <select id="cDocument">
+            <option value="default">Document</option>
+        </select>
+        <select id="cName">
+            <option value="default">Name</option>
+        </select>
+        <span style="float:right;margin-left:20px;">Filter by:</span>
+
+        <div class="onlyOneVisibleTab" id="commentGlance" style="height:650px">
+            <div class="graph" id="CsumGraph"></div>
+            <div class="leftColumn" id="CgenStats" style="height:200px"></div>  
+            <div class="rightColumn" id="CgenStats2" style="height:200px"></div>  
+            <div id="CIndStats"></div>       
+        </div>
+        <div class="onlyOneVisibleTab" id="commentGrades">
+            Please add a "comments.csv" file and click "Start Processing Comments"
+        </div>
+        <div class="onlyOneVisibleTab" id="commentDetails">
+            Please add a "comments.csv" file and click "Start Processing Comments"
+        </div>
+        <div class="onlyOneVisibleTab" id="commentQuestions">
+            Please add a "comments.csv" file and click "Start Processing Comments"
+        </div>
+        
+    </div>
+    
+    <div class="container onlyOneVisibleGroup" id="outputResponses">
+        <button class="onlyOneDisabledTab" data-show="#responseGlance" id="rgl">At a Glance</button>
+        <button class="onlyOneDisabledTab" data-show="#responseGrades" id="rgb">Grades</button>
+        <button class="onlyOneDisabledTab" data-show="#responseDetails" id="rdt">Responses</button>  
+       
+        <button id="rReset" style="float:right;margin-left:20px;">Reset</button>
+        <select id="rDocument">
+            <option value="default">Document</option>
+        </select>
+        <select id="rName">
+            <option value="default">Name</option>
+        </select>
+        <span style="float:right;margin-left:20px;">Filter by:</span>
+        
+        <div class="onlyOneVisibleTab" id="responseGlance" style="height:650px">
+            <div class="graph" id="RsumGraph"></div>
+            <div class="leftColumn" id="RgenStats" style="height:200px"></div>  
+            <div class="rightColumn" id="RgenStats2" style="height:200px"></div>  
+            <div id="RIndStats"></div>
+        </div>
+        <div class="onlyOneVisibleTab" id="responseGrades">
+            Please add a "response.csv" file and click "Start Processing Responses"
+        </div>
+        <div class="onlyOneVisibleTab" id="responseDetails">
+            Please add a "response.csv" file and click "Start Processing Responses"
+        </div>
+    </div>
+    </div>
+</div>
+
+</body>​
+​
